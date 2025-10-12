@@ -50,18 +50,20 @@ publishing {
         val nexusUser: String? = findProperty("NEXUS_USER") as String? ?: System.getenv("nexusUser")
         val nexusPassword: String? = findProperty("NEXUS_PASSWORD") as String? ?: System.getenv("nexusPassword")
 
-        if(nexusUser != null) {
-            println("- register 'MavenReleases' repository.")
-            maven {
-                name = "MavenReleases"
-                url = uri("https://repo.lylaw.fr/repository/maven-releases/")
-                credentials {
-                    username = nexusUser
-                    password = nexusPassword
+        if(refType.isNotEmpty()) {
+            if (nexusUser != null) {
+                println("- register 'MavenReleases' repository.")
+                maven {
+                    name = "MavenReleases"
+                    url = uri("https://repo.lylaw.fr/repository/maven-releases/")
+                    credentials {
+                        username = nexusUser
+                        password = nexusPassword
+                    }
                 }
+            } else {
+                println("- 'nexusUser' is null.")
             }
-        } else {
-            println("- 'nexusUser' is null.")
         }
     }
 
