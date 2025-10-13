@@ -47,7 +47,7 @@ publishing {
                 println("- repository not added (githubUser is null).")
             }
         } else {
-            println("- repository not added (refType is not a branch).")
+            println("- repository not added (refType is not a tag).")
         }
 
         val nexusUser: String? = findProperty("NEXUS_USER") as String? ?: System.getenv("nexusUser")
