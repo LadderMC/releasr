@@ -1,3 +1,5 @@
+import java.time.Instant
+
 plugins {
     `java-gradle-plugin`
     `maven-publish`
@@ -6,14 +8,18 @@ plugins {
 
 group = "fr.ladder"
 
-val timestamp: String = System.currentTimeMillis().toString(16)
+val timestamp: String = Instant.now().epochSecond.toString(16)
 val context = System.getenv("commitHash")?.take(7) ?: "local"
 
-version = "${nextVersion}-${timestamp}-${context}"
-version = System.getenv("refName")
-    ?.replace("v", "")
-    ?.replace("/", "-")
-    ?: "${nextVersion}-${timestamp}-${context}"
+version = when(System.getenv("refType") ?: "branch") {
+    "tag" -> System.getenv("refName")
+        ?.replace("v", "")
+        ?.replace("/", "-")
+        ?: error("'refName' not found")
+
+    "branch" -> "${nextVersion}-${timestamp}-${context}"
+    else -> error("unrecognized 'refType'")
+}
 
 repositories {
     mavenCentral()

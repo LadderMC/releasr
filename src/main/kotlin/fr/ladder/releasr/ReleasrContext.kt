@@ -1,5 +1,6 @@
 package fr.ladder.releasr
 
+import java.time.Instant
 import java.util.concurrent.TimeUnit
 
 /**
@@ -57,13 +58,16 @@ object ReleasrContext {
 
     val version: String
         get() {
-            val timestamp: String = System.currentTimeMillis().toString(16)
+            val timestamp: String = Instant.now().epochSecond.toString(16)
             val context = System.getenv("commitHash")?.take(7) ?: "local"
 
-            return System.getenv("refName")
-                ?.replace("v", "")
-                ?.replace("/", "-")
-                ?: "${nextVersion}-${timestamp}-${context}"
+            return when(versionType) {
+                VersionType.RELEASE -> System.getenv("refName")
+                    ?.replace("v", "")
+                    ?.replace("/", "-")
+                    ?: error("'refName' not found")
+                VersionType.PRERELEASE -> "${nextVersion}-${timestamp}-${context}"
+            }
         }
 }
 
