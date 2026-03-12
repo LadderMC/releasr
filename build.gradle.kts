@@ -86,6 +86,7 @@ val latestVersion: String?
                 .start()
 
             process.waitFor(1, TimeUnit.SECONDS)
+            println("error: ${process.errorStream.bufferedReader().readText()}")
             val tag = process.inputStream.bufferedReader()
                 .readText()
                 .lines()
