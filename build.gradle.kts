@@ -77,7 +77,6 @@ publishing {
 
 val latestVersion: String?
     get() {
-        println("try get latest version")
         try {
             val process = ProcessBuilder()
                 .command("git", "tag", "-l", "v[0-9]*")
@@ -86,7 +85,6 @@ val latestVersion: String?
                 .start()
 
             process.waitFor(1, TimeUnit.SECONDS)
-            println("error: ${process.errorStream.bufferedReader().readText()}")
             val tag = process.inputStream.bufferedReader()
                 .readText()
                 .lines()
@@ -94,19 +92,16 @@ val latestVersion: String?
                 .sortedWith { a, b -> compareSemVer(a, b) }
                 .lastOrNull()
 
-            println("tag $tag")
             return tag?.replace("v", "")
         } catch (_: Exception) {
         }
 
-        println("return null")
         return null
     }
 
 val nextVersion: String
     get() {
         val latestVersion = latestVersion ?: return "0.1.0"
-        println("not null")
         val parts = latestVersion.split('.')
         val major = parts[0].toInt()
         val minor = parts[1].toInt()
