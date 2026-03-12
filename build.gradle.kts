@@ -102,7 +102,6 @@ val latestVersion: String?
 val nextVersion: String
     get() {
         val latestVersion = latestVersion ?: return "0.1.0"
-
         val parts = latestVersion.split('.')
         val major = parts[0].toInt()
         val minor = parts[1].toInt()
