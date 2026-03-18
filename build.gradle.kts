@@ -8,7 +8,7 @@ plugins {
 
 group = "fr.ladder"
 
-val timestamp: String = Instant.now().epochSecond.toString(16)
+val timestamp: String = Instant.now().epochSecond.toString()
 val branch: String = System.getenv("refName")
     ?.replace("v", "")
     ?.replace("/", "-")

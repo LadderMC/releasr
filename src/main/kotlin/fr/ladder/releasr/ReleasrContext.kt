@@ -58,7 +58,7 @@ object ReleasrContext {
 
     val version: String
         get() {
-            val timestamp: String = Instant.now().epochSecond.toString(16)
+            val timestamp: String = Instant.now().epochSecond.toString()
             val branch: String = System.getenv("refName")
                 ?.replace("v", "")
                 ?.replace("/", "-")
